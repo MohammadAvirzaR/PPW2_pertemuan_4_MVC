@@ -13,38 +13,31 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        // Ambil parameter filter & pencarian dari request
-        $penulis = $request->input('author');   // dropdown penulis
-        $keyword = $request->input('keyword');  // pencarian judul
-        $title   = $request->input('title');    // nama untuk judul halaman
+        $penulis = $request->input('author');
+        $keyword = $request->input('keyword');
+        $title   = $request->input('title');   
 
-        // Query dasar
         $query = Bookss::query();
 
-        // Filter penulis
         if ($penulis) {
             $query->where('author', $penulis);
         }
 
-        // Pencarian berdasarkan judul
         if ($keyword) {
             $query->where('title', 'like', "%{$keyword}%");
         }
 
-        // Ambil data sesuai filter & pencarian
         $book_data = $query->get();
 
-        // Daftar penulis untuk dropdown
         $daftar_penulis = Bookss::select('author')->distinct()->get();
 
-        // Statistik dari hasil query
         $total_books   = $book_data->count();
         $total_price   = $book_data->sum('price');
         $average_price = $book_data->avg('price');
         $max_price     = $book_data->max('price');
         $min_price     = $book_data->min('price');
 
-        // Kirim data ke view
+        
         return view('books.index', compact(
             'book_data',
             'daftar_penulis',
@@ -95,18 +88,35 @@ class BookController extends Controller
         //
     }
 
-    public function edit(string $id)
+    public function edit( $id)
     {
-        //
+        $book = Bookss::findOrFail($id);
+        return view('books.edit', compact('book'));
     }
 
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'title'          => 'required|string|max:255',
+            'author'         => 'required|string|max:255',
+            'price'          => 'required|numeric',
+            'published_date' => 'required|date',
+        ]); 
+
+        $book = Bookss::findOrFail($id);
+        $book-> update([
+            'title'          => $request->input('title'),
+            'author'         => $request->input('author'),
+            'price'          => $request->input('price'),
+            'published_date' => $request->input('published_date'),
+        ]);
+        return redirect()->route('books.index')->with('success', 'Buku berhasil diperbarui.');
     }
 
     public function destroy(string $id)
     {
-        //
+        $book = Bookss::findOrFail($id);
+        $book->delete();
+        return redirect()->route('books.index')->with('success', 'Buku berhasil dihapus.');
     }
 }

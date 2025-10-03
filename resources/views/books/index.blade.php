@@ -151,6 +151,18 @@
             float: right;
         }
 
+        .btn.btn-danger {
+            display: inline-block;
+            padding: 6px 12px;
+            font-size: 13px;
+            border-radius: 6px;
+            text-decoration: none;
+            background: #ff4f4f;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
 
     </style>
 </head>
@@ -186,22 +198,33 @@
                 <th>Penulis</th>
                 <th>Harga</th>
                 <th>Tanggal Terbit</th>
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
-            @forelse ($book_data as $book)
+            @foreach ($book_data as $book)
                 <tr>
                     <td>{{ $book->id }}</td>
                     <td>{{ $book->title }}</td>
                     <td>{{ $book->author }}</td>
                     <td>{{ "Rp " . number_format($book->price, 0, ',', '.') }}</td>
                     <td>{{ date('d-m-Y', strtotime($book->published_date)) }}</td>
+
+                    <td>
+                        <a href="{{ route('books.edit',$book->id) }}" class="btn btn-primary">Edit</a>
+
+                        <form action="{{ route('books.destroy', $book->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus buku ini?')">Hapus</button>
+                        </form>
+
+
+                    </td>
                 </tr>
-            @empty
-                <tr>
-                    <td colspan="5" class="empty">Tidak ada data buku ditemukan</td>
-                </tr>
-            @endforelse
+
+
+            @endforeach
         </tbody>
     </table>
 

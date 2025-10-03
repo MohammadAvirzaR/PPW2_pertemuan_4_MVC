@@ -23,9 +23,17 @@ Route::get('/about', function () {
     ]);
 });
 
+
 Route::get('/book',[BookController::class, 'index'])->name('books.index');
 Route::get('/book/create',[BookController::class, 'create'])->name('books.create');
 Route::post('/book',[BookController::class, 'store'])->name('books.store');
+
+Route::get('/book/{id}/edit',[BookController::class, 'edit'])->name('books.edit');
+Route::put('/book/{id}',[BookController::class, 'update'])->name('books.update');
+Route::delete('/book/{id}', [BookController::class, 'destroy'])->name('books.destroy');
+
+
+
 
 
 
