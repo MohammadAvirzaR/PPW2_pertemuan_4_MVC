@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostControllers;
+use App\Http\Controllers\BookController;
 
 Route::get('/', function () {
     $title = "Landing Page";
@@ -22,4 +23,10 @@ Route::get('/about', function () {
     ]);
 });
 
-Route::get('/posts',[PostControllers::class, 'index']);
+Route::get('/book',[BookController::class, 'index'])->name('books.index');
+Route::get('/book/create',[BookController::class, 'create'])->name('books.create');
+Route::post('/book',[BookController::class, 'store'])->name('books.store');
+
+
+
+
