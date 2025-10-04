@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Book; // Pastikan nama model sesuai
 use App\Models\Bookss;
 
 class BookController extends Controller
@@ -65,7 +64,7 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi sederhana
+       
         $request->validate([
             'title'          => 'required|string|max:255',
             'author'         => 'required|string|max:255',
@@ -77,7 +76,7 @@ class BookController extends Controller
         $book->title          = $request->input('title');
         $book->author         = $request->input('author');
         $book->price          = $request->input('price');
-        $book->published_date = $request->input('published_date'); // konsisten dengan form
+        $book->published_date = $request->input('published_date'); 
         $book->save();
 
         return redirect()->route('books.index')->with('success', 'Buku berhasil ditambahkan.');
