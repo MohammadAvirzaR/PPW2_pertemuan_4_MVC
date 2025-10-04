@@ -209,7 +209,6 @@
                     <td>{{ $book->author }}</td>
                     <td>{{ "Rp " . number_format($book->price, 0, ',', '.') }}</td>
                     <td>{{ date('d-m-Y', strtotime($book->published_date)) }}</td>
-
                     <td>
                         <a href="{{ route('books.edit',$book->id) }}" class="btn btn-primary">Edit</a>
 
@@ -218,12 +217,8 @@
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus buku ini?')">Hapus</button>
                         </form>
-
-
                     </td>
                 </tr>
-
-
             @endforeach
         </tbody>
     </table>
